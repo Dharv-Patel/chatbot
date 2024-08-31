@@ -1,0 +1,26 @@
+{
+  "name": "duckduckgo-images-api",
+  "version": "1.0.5",
+  "description": "DuckDuckGo image-search api for node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KshitijMhatre/duckduckgo-images-api.git"
+  },
+  "keywords": [
+    "node",
+    "javascript",
+    "duckduckgo",
+    "image",
+    "image-search",
+    "api"
+  ],
+  "author": "Kshitij Mhatre (https://github.com/KshitijMhatre)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
