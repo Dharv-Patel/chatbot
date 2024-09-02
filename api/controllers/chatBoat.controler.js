@@ -8,7 +8,7 @@ import { image_search, image_search_generator } from 'duckduckgo-images-api';
 export const chatReaponce = async (req,res,next)=>{
     try {
         const {question,historyall} = req.body;
-        const genAI = new GoogleGenerativeAI("AIzaSyBJgpvGQCMHqK9CKZXJgss69LjH86c0mQY");
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_AI_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const chat = model.startChat({            
             history:historyall
