@@ -10,14 +10,15 @@ import cors from 'cors'
 dotenv.config()  // It's use for env veriable usecase
 
 
-// mongoose
-//     .connect(process.env.DB_STRING)
-//     .then(()=>{
-//         console.log("MongoDB is connected!")
-//     })
-//     .catch((err)=>{
-//         console.log(err)
-//     })
+mongoose
+    .connect(process.env.DB_STRING)
+    .then(()=>{
+        console.log("MongoDB is connected!")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    
 if (cluster.isPrimary) { // In ES modules, 'isMaster' is replaced by 'isPrimary'
     const numCPUs = cpus().length;
     console.log(numCPUs)
