@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       boxShadow:{
-        insideChatBox: "inset 0px 0px 10px 0px #6a6a6a"
+        insideChatBox: "inset 0px 0px 3px 2px #c5cbd3"
       },
       background:{
         slop: "linear-gradient(0deg, rgba(244,244,244,1) 50%, rgba(255,255,255,0.3781162123052346) 100%)"
