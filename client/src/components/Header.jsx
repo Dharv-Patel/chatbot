@@ -12,7 +12,7 @@ function Header() {
     setHint(e.target.id)
   }
   return (
-    <div className='bg-slate-300 w-[4%] h-full sm:h-[100vh] fixed z-50 bg-opacity-50 shadow-xl'>
+    <div className='bg-slate-300 w-[4%] h-full sm:h-[100vh] fixed z-50 bg-opacity-20 shadow-xl backdrop-blur'>
       <div className='flex flex-col ml-4 items-start'>
 
       <Link to='/' className='text-center mt-6 flex' onMouseOver={handelHint}>
