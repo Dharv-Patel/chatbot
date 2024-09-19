@@ -5,28 +5,33 @@ import Loading2 from "../components/Loading2";
 import Image from "../components/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSquare } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from 'react-redux';
+import { setChat, setHistory } from '../redux/user/chatSlice';
 
 function Chatbot() {
-  const [chatData, setChatData] = useState([]);
-  const [history, setHistory] = useState([
-    {
-      role: "user",
-      parts: [
-        {
-          text: "give me answer if and only if it is related to travaling or any place in world in 500 words.if question is not related to travaling then show answer like only travaling related question allowed",
-        },
-      ],
-    },
-    {
-      parts: [
-        {
-          text: `Understood. I'll provide travel-related responses, If the question is not travel-related, I'll simply respond with \"Travel-related questions only.\"Please feel free to ask your question.`,
-        },
-      ],
-      role: "model",
-    },
-  ]);
-
+  const { chatData, history } = useSelector((state)=>state.chat)
+  const dispatch = useDispatch()
+  // const [chatData, setChatData] = useState([]);
+  // const [history, setHistory] = useState([
+  //   {
+  //     role: "user",
+  //     parts: [
+  //       {
+  //         text: "give me answer if and only if it is related to travaling or any place in world in 500 words.if question is not related to travaling then show answer like only travaling related question allowed",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     parts: [
+  //       {
+  //         text: `Understood. I'll provide travel-related responses, If the question is not travel-related, I'll simply respond with \"Travel-related questions only.\"Please feel free to ask your question.`,
+  //       },
+  //     ],
+  //     role: "model",
+  //   },
+  // ]);
+  console.log(chatData)
+  console.log(history)
   const [question, setQuestion] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [resourseLoading, setResourseLoading] = useState(false);
@@ -50,32 +55,36 @@ function Chatbot() {
     });
     const result = await res.json();
     console.log(result);
-    setChatData([
-      ...chatData,
-      {
-        user: question,
-        model: `${result}`,
-      },
-    ]);
-    setHistory([
-      ...history,
-      {
-        role: "user",
-        parts: [
-          {
-            text: question,
-          },
-        ],
-      },
-      {
-        parts: [
-          {
-            text: result,
-          },
-        ],
-        role: "model",
-      },
-    ]);
+    dispatch(
+      setChat([
+        ...chatData,
+        {
+          user: question,
+          model: `${result}`,
+        },
+      ])
+    )
+    dispatch(
+      setHistory([
+        ...history,
+        {
+          role: "user",
+          parts: [
+            {
+              text: question,
+            },
+          ],
+        },
+        {
+          parts: [
+            {
+              text: result,
+            },
+          ],
+          role: "model",
+        },
+      ])
+    )
     setChatLoading(false);
 
     if (!result.includes("Travel-related questions only.")) {

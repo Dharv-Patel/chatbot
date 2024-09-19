@@ -4,10 +4,12 @@ import minglepng from '.././assets/image/minglepng.png';
 import model1 from '.././assets/image/model1.webp';
 import model3 from '.././assets/image/model3.webp';
 import {Link, useNavigate} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice.js';
 
 
 function Signin() {
-    const [signup, setSignup] = useState(true)
+    const [signup, setSignup] = useState(false)
     const [signupFormData, setSignupFormData] = useState({
         username: "",
         email: "",
@@ -17,9 +19,11 @@ function Signin() {
         email: "",
         password: ""
     });
-    const [error, setError] = useState(null);
-    const [loding, setLoding] = useState(false);
+    const { loding, error} = useSelector((state) => state.user)
+    const [errorUp, setError] = useState(null);
+    const [lodingUp, setLoding] = useState(false);
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const hendelSignupFormData = (e)=>{
         setSignupFormData({
@@ -56,7 +60,8 @@ function Signin() {
             setLoding(false)
             setError(null)
             console.log(data)
-            navigate('/')
+            setSignup(false)
+            
         } catch (error) {
           setError(error.message)
           setLoding(false)
@@ -74,7 +79,7 @@ function Signin() {
       const handelSigninSubmit = async (e)=>{
         e.preventDefault()
         try {
-            setLoding(true)
+          dispatch(signInStart())
             console.log(signinFormData)
             const res = await fetch('http://localhost:1000/auth/signin', {
               method: "POST",
@@ -85,16 +90,13 @@ function Signin() {
             })
             const data = await res.json();
             if(data.sucess === false){
-                setError(data.message);
-                setLoding(false);
+              dispatch(signInFailure(data.message))
               return;
             }
-            setLoding(false)
-            setError(null)
+            dispatch(signInSuccess(data))
             navigate('/')
         } catch (error) {
-            setError(error.message)
-            setLoding(false)
+          dispatch(signInFailure(error.message))
         }
     
       }
@@ -187,9 +189,9 @@ function Signin() {
                                 <button type="button" className="btnShow">show</button>
                             </div>
                         </div>
-                        <div className='text-sm text-red-700 ml-6 mt-4'>{error}</div>
+                        <div className='text-sm text-red-700 ml-6 mt-4'>{errorUp}</div>
 
-                        <button type="submit" className={error==null ?"sig-btnSubmit":"sig-btnSubmit mt-5"} disabled={loding}>{loding ? 'Loding...':'SignUp'}</button>
+                        <button type="submit" className={errorUp==null ?"sig-btnSubmit":"sig-btnSubmit mt-5"} disabled={lodingUp}>{lodingUp ? 'Loding...':'SignUp'}</button>
                     </form>
             </div>
             <div className={`${signup ? 'slider signup-active' :'slider'}`}>
