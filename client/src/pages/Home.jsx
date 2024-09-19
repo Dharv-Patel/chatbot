@@ -18,6 +18,7 @@ function Home() {
   const keyComponent = useRef();
   const placesRef = useRef();
   const img = useRef();
+  const firstPageBack = useRef();
   const t1 = gsap.timeline();
   
 
@@ -186,9 +187,23 @@ function Home() {
         scroller: "body",
         markers: false,
         start: "top top",
-        end: "top -500%",
+        end: "top -400%",
         scrub: 1,
         pin: placesRef.current,
+      },
+    });
+    gsap.to(firstPageBack.current, {
+      y: '-50%',
+      scale: 1.5,
+      scaleY: 1.6,
+      scrollTrigger: {
+        trigger: firstPageBack.current,
+        scroller: "body",
+        markers: true,
+        start: "top 0%",
+        end: "top -340%",
+        scrub: true,
+        pin: firstPageBack.current,
       },
     });
   });
@@ -200,7 +215,7 @@ function Home() {
       <div className="">
         {/* website content */}
         <div>
-          <div className="absolute top-[-30%] -z-20">
+          <div ref={firstPageBack} className="absolute top-[-30%] -z-20">
             <img
               className="w-full blur-sm"
               src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?q=80&w=1774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -294,7 +309,8 @@ function Home() {
         <div className="w-full h-[100vh] bg-transparent"></div>
 
         {/* this is the second page that contain key components */}
-        <div className="w-full h-[200vh] bg-gradient-to-l to-cyan-200 via-white from-cyan-200 flex justify-center">
+        <div className="w-full h-[200vh]  flex justify-center">
+        {/* bg-gradient-to-l to-cyan-200 via-white from-cyan-200 */}
           {/* center line */}
           {/* <div className="w-1 h-[1500px] bg-black my-40 absolute z-30"></div> */}
 

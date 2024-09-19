@@ -16,7 +16,7 @@ function HomeImageDisp({ data }) {
       scrollTrigger: {
         trigger: imgRef.current,
         scroller: "body",
-        markers: true,
+        // markers: true,
         start: "top 50%",
         end: "bottom bottom",
         // end: "max",
