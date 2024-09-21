@@ -5,33 +5,15 @@ import Loading2 from "../components/Loading2";
 import Image from "../components/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSquare } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from 'react-redux';
-import { setChat, setHistory } from '../redux/user/chatSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { clearChat, setChat, setHistory } from "../redux/user/chatSlice";
+import Newchat from "../components/Newchat";
 
 function Chatbot() {
-  const { chatData, history } = useSelector((state)=>state.chat)
-  const dispatch = useDispatch()
-  // const [chatData, setChatData] = useState([]);
-  // const [history, setHistory] = useState([
-  //   {
-  //     role: "user",
-  //     parts: [
-  //       {
-  //         text: "give me answer if and only if it is related to travaling or any place in world in 500 words.if question is not related to travaling then show answer like only travaling related question allowed",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     parts: [
-  //       {
-  //         text: `Understood. I'll provide travel-related responses, If the question is not travel-related, I'll simply respond with \"Travel-related questions only.\"Please feel free to ask your question.`,
-  //       },
-  //     ],
-  //     role: "model",
-  //   },
-  // ]);
-  console.log(chatData)
-  console.log(history)
+  const { chatData, history, title, chatId } = useSelector((state) => state.chat);
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [question, setQuestion] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [resourseLoading, setResourseLoading] = useState(false);
@@ -63,7 +45,7 @@ function Chatbot() {
           model: `${result}`,
         },
       ])
-    )
+    );
     dispatch(
       setHistory([
         ...history,
@@ -76,16 +58,54 @@ function Chatbot() {
           ],
         },
         {
+          role: "model",
           parts: [
             {
               text: result,
             },
           ],
-          role: "model",
         },
       ])
-    )
+    );
     setChatLoading(false);
+
+    // save data into database
+    const newchatData = {
+      userId: currentUser._id,
+      chatId,
+      newchat: [
+        {
+          user: question,
+          model: `${result}`,
+        },
+      ],
+      newhistory: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: question,
+            },
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {
+              text: result,
+            },
+          ],
+        },
+      ],
+    };
+    const reschat = await fetch("http://localhost:1000/userchats/addchats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newchatData),
+    });
+    const data = await reschat.json();
 
     if (!result.includes("Travel-related questions only.")) {
       const imagesArr = await fetch(
@@ -141,6 +161,13 @@ function Chatbot() {
 
       {/* Chatting side */}
       <div className="w-[48%] h-full flex flex-col items-center justify-evenly">
+        {title == null ? (
+          <div className="w-[48%] absolute h-full">
+            <Newchat />
+          </div>
+        ) : (
+          ""
+        )}
         <div
           className="w-full h-full overflow-y-scroll overflow-x-hidden scroll-smooth"
           ref={chatContainerRef} // Attach ref to the chat container
@@ -175,10 +202,10 @@ function Chatbot() {
             >
               {chatLoading ? (
                 <FontAwesomeIcon
-                id="home"
-                icon={faSquare}
-                className=" text-slate-700 mt-1"
-              />
+                  id="home"
+                  icon={faSquare}
+                  className=" text-slate-700 mt-1"
+                />
               ) : (
                 <FontAwesomeIcon
                   id="home"

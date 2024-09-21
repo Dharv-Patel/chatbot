@@ -7,15 +7,15 @@ export const addNewChats = async (req, res, next) => {
     const userHasChat = await UserData.findOne({ userId }).select("chats");
     if (!userHasChat) {
       const data = new UserData({ userId, chats });
-      await data.save();
-      res.status(201).json("chat hasbeen created");
+      const finalData = await data.save();
+      res.status(201).json(finalData);
     } else {
       const chatSaved = await UserData.findOneAndUpdate(
         { userId }, // Query to find the user
         { $push: { chats } }, // $push appends to the chats array
         { new: true, runValidators: true } // Options: return updated doc and run schema validation
       );
-      res.status(201).json("chat hasbeen saved");
+      res.status(201).json(chatSaved);
     }
   } catch (error) {
     next(error);
