@@ -35,6 +35,6 @@ export const store = configureStore({
       serializableCheck: false,
     }),
 });
-persistStore(store).purge();
+// persistStore(store).purge();
 
 export const persistor = persistStore(store);

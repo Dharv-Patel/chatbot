@@ -195,18 +195,18 @@ function Home() {
         pin: placesRef.current,
       },
     });
-    gsap.to(firstPageBack.current, {
+    gsap.to('.firstPageBack', {
       y: '-50%',
       scale: 1.5,
       scaleY: 1.6,
       scrollTrigger: {
-        trigger: firstPageBack.current,
+        trigger: '.firstPageBack',
         scroller: "body",
         markers: true,
         start: "top 0%",
         end: "top -340%",
         scrub: true,
-        pin: firstPageBack.current,
+        pin: '.firstPageBack',
       },
     });
   });
@@ -218,13 +218,20 @@ function Home() {
       <div className="">
         {/* website content */}
         <div>
-          <div ref={firstPageBack} className="absolute top-[-30%] -z-20">
+          <div ref={firstPageBack} className="firstPageBack absolute top-[-30%] -z-20">
             <img
               className="w-full blur-sm"
               src={homeMainImg}
               alt=""
             />
           </div>
+          {/* <div ref={firstPageBack} className="firstPageBack absolute top-[-30%] -z-30">
+            <img
+              className="w-full blur-sm"
+              src={homeMainImg}
+              alt=""
+            />
+          </div> */}
 
           <div
             ref={headingBack}

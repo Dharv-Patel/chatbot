@@ -5,6 +5,7 @@ import authRoute from './routes/auth.route.js'
 import { cpus } from 'os'
 import cluster from 'cluster'
 import chatRoute from './routes/chatBot.route.js'
+import userDataRoute from './routes/chatData.route.js'
 import cors from 'cors'
 
 dotenv.config()  // It's use for env veriable usecase
@@ -37,6 +38,7 @@ if (cluster.isPrimary) { // In ES modules, 'isMaster' is replaced by 'isPrimary'
     app.use(cors())
     app.use('/auth',authRoute)
     app.use('/chatbot',chatRoute)
+    app.use('/userchats',userDataRoute)
 
     // middlewear for error heandaling
     app.use((err,req,res,next)=>{

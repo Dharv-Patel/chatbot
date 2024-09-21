@@ -10,7 +10,9 @@ function HomeImageDisp({ data }) {
   const containerRef = useRef();
   useGSAP(() => {
     gsap.from(imgRef.current.querySelectorAll(".img"), {
-      rotateY: 270,
+      // rotateY: 270,
+      y: 100,
+      opacity: 0,
       duration: 0.5,
       stagger: 0.2,
       scrollTrigger: {

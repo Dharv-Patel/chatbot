@@ -4,7 +4,6 @@ const initialState = {
     currentUser: null,
     error: null,
     loading: false,
-    hi: 'h'
 }
 
 const userSlice = createSlice({

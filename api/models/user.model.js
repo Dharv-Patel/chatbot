@@ -14,7 +14,22 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    age: {
+        type: Number,
+        required: false,
+        default: null
+    },
+    mobileNumber: {
+        type: String,
+        required: false,
+        default: null
+    },
+    profilePicture: {
+        type: String,
+        required: false,
+        default: null
+    },
 })
 
 const User = mongoose.model('User',userSchema)
