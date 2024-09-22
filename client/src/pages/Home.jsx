@@ -202,7 +202,7 @@ function Home() {
       scrollTrigger: {
         trigger: '.firstPageBack',
         scroller: "body",
-        markers: true,
+        markers: false,
         start: "top 0%",
         end: "top -340%",
         scrub: true,
