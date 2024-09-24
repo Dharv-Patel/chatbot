@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
@@ -12,16 +12,27 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import History from "./History";
+import { logout } from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearChat } from "../redux/user/chatSlice";
 
 function Header() {
   const [hint, setHint] = useState(null);
   const [historyActive, setHistoryActive] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const handelHint = (e) => {
     setHint(e.target.id);
   };
   const emptyHint = (e) => {
     setHint(null);
+  };
+  const userLogout = () => {
+    dispatch(logout());
+    dispatch(clearChat());
+    navigate( "/aunthicate" );
   };
   return (
     <>
@@ -109,36 +120,68 @@ function Header() {
               </span>
             </div>
           </div>
-          <div
-            className={`${
-              hint == "logout" ? "w-40" : "w-10"
-            } h-10 my-2 ml-3 bg-slate-100 rounded-full overflow-hidden outline outline-white outline-1 flex transition-all duration-500 delay-100 ease-out`}
-            onMouseEnter={handelHint}
-            onMouseLeave={emptyHint}
-          >
+          {currentUser == null ? (
             <div
-              id="logout"
               className={`${
-                hint == "logout"
-                  ? "bg-green-600 rotate-[360deg]"
-                  : " bg-sky-600"
-              } min-w-10 h-10 text-center place-content-center rounded-full transition-all duration-[1.3s] ease-in-out`}
+                hint == "login" ? "w-40" : "w-10"
+              } h-10 my-2 ml-3 bg-slate-100 rounded-full overflow-hidden outline outline-white outline-1 flex transition-all duration-500 delay-100 ease-out`}
+              onMouseEnter={handelHint}
+              onMouseLeave={emptyHint}
             >
-              <Link to="/aunthicate" className="">
+              <div
+                id="login"
+                className={`${
+                  hint == "login"
+                    ? "bg-green-600 rotate-[360deg]"
+                    : " bg-sky-600"
+                } min-w-10 h-10 text-center place-content-center rounded-full transition-all duration-[1.3s] ease-in-out`}
+              >
+                <Link to="/aunthicate" className="">
+                  <FontAwesomeIcon
+                    icon={faRightToBracket}
+                    className="text-2xl text-white"
+                  />
+                </Link>
+              </div>
+              <div className=" text-black mr-5 w-full flex justify-center items-center text-lg font-semibold mx-1">
+                <span
+                  className={`${hint == "login" ? "inline-block" : "hidden"}`}
+                >
+                  Login
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`${
+                hint == "logout" ? "w-40" : "w-10"
+              } h-10 my-2 ml-3 bg-slate-100 rounded-full overflow-hidden outline outline-white outline-1 flex transition-all duration-500 delay-100 ease-out`}
+              onMouseEnter={handelHint}
+              onMouseLeave={emptyHint}
+              onMouseDown={userLogout}
+            >
+              <div
+                id="logout"
+                className={`${
+                  hint == "logout"
+                    ? "bg-green-600 rotate-[360deg]"
+                    : " bg-sky-600"
+                } min-w-10 h-10 text-center place-content-center rounded-full transition-all duration-[1.3s] ease-in-out`}
+              >
                 <FontAwesomeIcon
                   icon={faRightToBracket}
                   className="text-2xl text-white"
                 />
-              </Link>
+              </div>
+              <div className=" text-black mr-5 w-full flex justify-center items-center text-lg font-semibold mx-1">
+                <span
+                  className={`${hint == "logout" ? "inline-block" : "hidden"}`}
+                >
+                  Logout
+                </span>
+              </div>
             </div>
-            <div className=" text-black mr-5 w-full flex justify-center items-center text-lg font-semibold mx-1">
-              <span
-                className={`${hint == "logout" ? "inline-block" : "hidden"}`}
-              >
-                Logout
-              </span>
-            </div>
-          </div>
+          )}
           <div
             className={`${
               hint == "profile" ? "w-40" : "w-10"
@@ -175,7 +218,7 @@ function Header() {
             } h-10 my-2 ml-3 bg-slate-100 rounded-full overflow-hidden outline outline-white outline-1 flex transition-all duration-500 delay-100 ease-out`}
             onMouseEnter={handelHint}
             onMouseLeave={emptyHint}
-            onMouseDown={()=>setHistoryActive(!historyActive)}
+            onMouseDown={() => setHistoryActive(!historyActive)}
           >
             <div
               id="history"
@@ -185,7 +228,10 @@ function Header() {
                   : " bg-sky-600"
               } min-w-10 h-10 text-center place-content-center rounded-full transition-all duration-[1.3s] ease-in-out`}
             >
-              <FontAwesomeIcon icon={!historyActive?faBook:faXmark} className="text-2xl text-white" />
+              <FontAwesomeIcon
+                icon={!historyActive ? faBook : faXmark}
+                className="text-2xl text-white"
+              />
             </div>
             <div className=" text-black mr-5 w-full flex justify-center items-center text-lg font-semibold mx-1">
               <span
@@ -197,10 +243,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="">
-
-      {historyActive ? <History /> : ""}
-      </div>
+      <div className="">{historyActive ? <History /> : ""}</div>
     </>
   );
 }
