@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setTitle, setChatId } from "../redux/user/chatSlice";
+import { setTitle, setChatId, clearChat } from "../redux/user/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,9 @@ function Startchat() {
   const [titleState, settitle] = useState("");
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const { chatData, history, title } = useSelector((state)=>state.chat)
+  // let { chatData, history, title } = useSelector((state)=>state.chat)
+  const [display, setDisplay] = useState(true)
+  let { chatData, history } = useSelector((state)=>state.chat)
 
 
   const handelTitle = (e) => {
@@ -17,6 +19,7 @@ function Startchat() {
   const handelSubmit = async (e) => {
     e.preventDefault();
     if (titleState != null) {
+      await dispatch(clearChat())
       dispatch(setTitle(titleState));
       let date = new Date().toLocaleDateString();
       const userchatData = {
@@ -25,8 +28,34 @@ function Startchat() {
           {
             title: titleState,
             date,
-            chatData,
-            history,
+            chatData:[],
+            history: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: "give me answer if and only if it is related to travaling or any place in world in 500 words.if question is not related to travaling then give answer the question in 10 to 15 words and write like i am traval ai so ask only travaling related questions",
+                  },
+                ],
+              },
+              {
+                parts: [
+                  {
+                    text: `I'm ready to assist you with your travel inquiries!
+          
+          Just ask me anything related to travel, such as:
+          
+          Destinations: "What are the best places to visit in Europe for a honeymoon?"
+          Activities: "What are some fun things to do in Tokyo?"
+          Tips: "What are some packing tips for a backpacking trip?"
+          Transportation: "How can I get from Paris to Amsterdam by train?"
+          Culture: "What are the local customs in Bali?"
+          Feel free to ask your question.`,
+                  },
+                ],
+                role: "model",
+              },
+            ],
           },
         ],
       };
@@ -41,13 +70,14 @@ function Startchat() {
       if(data.sucess !== false){
         console.log(data)
         const chatId = data.chats[data.chats.length - 1]._id;
-        dispatch(setChatId(chatId)) 
+        dispatch(setChatId(chatId))
+        setDisplay(false)
       }
     }
   };
 
   return (
-    <div className="absolute w-[80%] h-[40%] top-1/2 bg-sky-200 translate-x-[-50%] translate-y-[-50%] rounded-2xl z-10 outline outline-slate-600">
+    <div className={`absolute w-[80%] h-[40%] top-1/2 bg-sky-200 translate-x-[-50%] translate-y-[-50%] rounded-2xl z-10 outline outline-slate-600 ${display?'':'hidden'}`}>
       {currentUser != null ? (
         <form
           onSubmit={handelSubmit}

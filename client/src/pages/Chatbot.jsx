@@ -160,7 +160,7 @@ function Chatbot() {
       </div>
 
       {/* Chatting side */}
-      <div className="w-[48%] h-full flex flex-col items-center justify-evenly">
+      <div className="w-[48%] h-full flex flex-col items-center justify-evenly bg-white">
         {title == null ? (
           <div className="w-[48%] absolute h-full">
             <Newchat />
@@ -172,7 +172,7 @@ function Chatbot() {
           className="w-full h-full overflow-y-scroll overflow-x-hidden scroll-smooth"
           ref={chatContainerRef} // Attach ref to the chat container
         >
-          <div className="chatContainer w-[80%] m-auto">
+          <div className="chatContainer w-[85%] m-auto">
             <div className="w-full h-full">
               {chatData.map((data, index) => (
                 <Chat qna={data} key={index} />
