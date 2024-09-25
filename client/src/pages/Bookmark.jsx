@@ -36,16 +36,16 @@ export default function Bookmark() {
           <h1 className="w-full h-10 mb-3 shadow-lg rounded-lg text-2xl font-bold font-sans text-slate-800 text-center bg-white ">
             Bookmarked Images
           </h1>
-          <div className="w-full h-full flex justify-evenly flex-wrap">
+          <div className="w-full h-full flex justify-evenly flex-wrap cursor-pointer">
             {imgs.length != 0
               ? imgs.map((value, i) => {
                   return (
                     <div
-                      className="w-52 h-56 bg-red-200 m-2 rounded-lg overflow-hidden"
+                      className="w-52 h-56 bg-transparent m-2 rounded-lg overflow-hidden hover:outline outline-[3px] outline-slate-800"
                       key={i}
                       onMouseDown={()=>setBigImg(value)}
                     >
-                      <img src={value} alt="" className="w-52 h-56" />
+                      <img src={value} alt="" className="w-52 h-56 " />
                     </div>
                   );
                 })

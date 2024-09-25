@@ -20,12 +20,22 @@ const userSchema = mongoose.Schema({
         required: false,
         default: null
     },
+    gender: {
+        type: String,
+        required: false,
+        default: null
+    },
     mobileNumber: {
         type: String,
         required: false,
         default: null
     },
     profilePicture: {
+        type: String,
+        required: false,
+        default: null
+    },
+    address: {
         type: String,
         required: false,
         default: null

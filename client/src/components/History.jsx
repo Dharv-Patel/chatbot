@@ -8,6 +8,7 @@ import {
   setChatId,
 } from "../redux/user/chatSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function History() {
   const [chats, setChats] = useState([]);
@@ -15,6 +16,7 @@ function History() {
   const { currentUser } = useSelector((state) => state.user);
   const { title } = useSelector((state) => state.chat);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   let todayChat = chats.filter((value, i) => {
     if (value.days <= 1) return value;
@@ -74,6 +76,7 @@ function History() {
       dispatch(setChatId(data.chats[0]._id));
       dispatch(setChat(data.chats[0].chatData));
       dispatch(setHistory(data.chats[0].history));
+      navigate('/chatbot')
     }
   };
   return (
