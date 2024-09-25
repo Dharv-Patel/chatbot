@@ -63,3 +63,16 @@ export const getChats = async (req, res, next) => {
     next(error);
   }
 };
+export const addImgBookmark = async (req, res, next) => {
+  try {
+    const { userId, imgUrl } = req.body;
+    const chatSaved = await UserData.findOneAndUpdate(
+      { userId },                        // Query to find the user by userId
+      { $push: { 'bookmarks.photo': imgUrl } }, // $push to append the new image to bookmarks.images
+      { new: true, runValidators: true }          // Options: return updated document and run schema validation
+    )
+    res.status(201).json(chatSaved);
+  } catch (error) {
+    next(error);
+  }
+};

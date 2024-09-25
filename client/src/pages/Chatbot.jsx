@@ -155,7 +155,10 @@ function Chatbot() {
       <div className="w-[4%]"></div>
       <div className="w-[48%] h-full bg-slate-200 overflow-y-scroll overflow-x-hidden scroll-smooth no-scrollbar">
         <div className="w-full h-[320px]">
-          <Image images={imageDisp} />
+          {imageDisp.length != 0
+          ? <Image images={imageDisp} />
+          : ''
+          }
         </div>
       </div>
 
