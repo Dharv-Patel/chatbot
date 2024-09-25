@@ -9,24 +9,26 @@ function Image({ images }) {
   const [img3Hover, setimg3Hover] = useState(false);
   const [img4Hover, setimg4Hover] = useState(false);
   const [img5Hover, setimg5Hover] = useState(false);
-  const [savedImg, setSavedImg] = useState([''])
-  const { currentUser } = useSelector((state) => state.user); 
-  const addBookmark = async (imgUrl)=>{
-    const reschat = await fetch("http://localhost:1000/userchats/addimgbookmark", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({userId: currentUser._id,imgUrl}),
-    });
+  const [savedImg, setSavedImg] = useState([""]);
+  const { currentUser } = useSelector((state) => state.user);
+  const addBookmark = async (imgUrl) => {
+    const reschat = await fetch(
+      "http://localhost:1000/userchats/addimgbookmark",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: currentUser._id, imgUrl }),
+      }
+    );
     const data = await reschat.json();
-    if(data.success != false){
-      setSavedImg([...savedImg,...[imgUrl]])
-      console.log(savedImg)
+    if (data.success != false) {
+      setSavedImg([...savedImg, ...[imgUrl]]);
+      console.log(savedImg);
     }
-  }
+  };
   if (images.length != 0) {
-
     return (
       <>
         <div className="shadow-insideChatBox my-4 rounded-lg py-4 px-2">
@@ -47,12 +49,15 @@ function Image({ images }) {
                 // onError={`this.onerror=null; this.src='${images[5]}'`}
               />
               {img1Hover ? (
-                <button className="w-8 h-8 relative left-[90%] bottom-10 bg-cyan-600 text-xl rounded-full hover:bg-green-600 text-gray-300" onClick={()=>addBookmark(images[0])}>
-                  {savedImg.includes(images[0])
-                  ?
-                  <FontAwesomeIcon icon={faCheck} />
-                  : <FontAwesomeIcon icon={faDownload} />
-                }
+                <button
+                  className="w-8 h-8 relative left-[90%] bottom-10 bg-cyan-600 text-xl rounded-full hover:bg-green-600 text-gray-300"
+                  onClick={() => addBookmark(images[0])}
+                >
+                  {savedImg.includes(images[0]) ? (
+                    <FontAwesomeIcon icon={faCheck} />
+                  ) : (
+                    <FontAwesomeIcon icon={faDownload} />
+                  )}
                 </button>
               ) : (
                 ""
@@ -72,12 +77,15 @@ function Image({ images }) {
                   //   onError={`this.onerror=null; this.src='${images[0]}'`}
                 />
                 {img2Hover ? (
-                  <button className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300" onClick={()=>addBookmark(images[1])}>
-                    {savedImg.includes(images[1])
-                  ?
-                  <FontAwesomeIcon icon={faCheck} />
-                  : <FontAwesomeIcon icon={faDownload} />
-                }
+                  <button
+                    className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300"
+                    onClick={() => addBookmark(images[1])}
+                  >
+                    {savedImg.includes(images[1]) ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : (
+                      <FontAwesomeIcon icon={faDownload} />
+                    )}
                   </button>
                 ) : (
                   ""
@@ -96,12 +104,15 @@ function Image({ images }) {
                   //   onError={`this.onerror=null; this.src='${images[0]}'`}
                 />
                 {img3Hover ? (
-                  <button className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300" onClick={()=>addBookmark(images[2])}>
-                    {savedImg.includes(images[2])
-                  ?
-                  <FontAwesomeIcon icon={faCheck} />
-                  : <FontAwesomeIcon icon={faDownload} />
-                }
+                  <button
+                    className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300"
+                    onClick={() => addBookmark(images[2])}
+                  >
+                    {savedImg.includes(images[2]) ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : (
+                      <FontAwesomeIcon icon={faDownload} />
+                    )}
                   </button>
                 ) : (
                   ""
@@ -120,12 +131,15 @@ function Image({ images }) {
                   //   onError={`this.onerror=null; this.src='${images[0]}'`}
                 />
                 {img4Hover ? (
-                  <button className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300" onClick={()=>addBookmark(images[3])}>
-                    {savedImg.includes(images[3])
-                  ?
-                  <FontAwesomeIcon icon={faCheck} />
-                  : <FontAwesomeIcon icon={faDownload} />
-                }
+                  <button
+                    className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300"
+                    onClick={() => addBookmark(images[3])}
+                  >
+                    {savedImg.includes(images[3]) ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : (
+                      <FontAwesomeIcon icon={faDownload} />
+                    )}
                   </button>
                 ) : (
                   ""
@@ -144,12 +158,15 @@ function Image({ images }) {
                   //   onError={`this.onerror=null; this.src='${images[0]}'`}
                 />
                 {img5Hover ? (
-                  <button className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300" onClick={()=>addBookmark(images[4])}>
-                    {savedImg.includes(images[4])
-                  ?
-                  <FontAwesomeIcon icon={faCheck} />
-                  : <FontAwesomeIcon icon={faDownload} />
-                }
+                  <button
+                    className="w-6 h-6 relative left-[85%] bottom-7 bg-cyan-600 rounded-full hover:bg-green-600 text-gray-300"
+                    onClick={() => addBookmark(images[4])}
+                  >
+                    {savedImg.includes(images[4]) ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : (
+                      <FontAwesomeIcon icon={faDownload} />
+                    )}
                   </button>
                 ) : (
                   ""

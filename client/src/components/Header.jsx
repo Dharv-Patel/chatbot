@@ -105,7 +105,7 @@ function Header() {
                   : " bg-sky-600"
               } min-w-10 h-10 text-center place-content-center rounded-full transition-all duration-[1.3s] ease-in-out`}
             >
-              <Link to="/" className="">
+              <Link to="/bookmarks" className="">
                 <FontAwesomeIcon
                   icon={faBookmark}
                   className="text-2xl text-white"
