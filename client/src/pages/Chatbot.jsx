@@ -8,9 +8,12 @@ import { faArrowUp, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { clearChat, setChat, setHistory } from "../redux/user/chatSlice";
 import Newchat from "../components/Newchat";
+import DayPlan from "../components/DayPlan";
 
 function Chatbot() {
-  const { chatData, history, title, chatId } = useSelector((state) => state.chat);
+  const { chatData, history, title, chatId } = useSelector(
+    (state) => state.chat
+  );
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -18,6 +21,7 @@ function Chatbot() {
   const [chatLoading, setChatLoading] = useState(false);
   const [resourseLoading, setResourseLoading] = useState(false);
   const [imageDisp, setImageDisp] = useState([]);
+  const [planDisp, setPlanDisp] = useState(null);
 
   const handelQuestion = (e) => {
     setQuestion(e.target.value);
@@ -27,7 +31,7 @@ function Chatbot() {
     setChatLoading(true); // loading...
     setResourseLoading(true);
     e.preventDefault();
-
+    
     const res = await fetch("http://localhost:1000/chatbot/chatResult", {
       method: "POST",
       headers: {
@@ -36,7 +40,7 @@ function Chatbot() {
       body: JSON.stringify({ question, historyall: history }),
     });
     const result = await res.json();
-    console.log(result);
+    // console.log(result);
     dispatch(
       setChat([
         ...chatData,
@@ -46,7 +50,7 @@ function Chatbot() {
         },
       ])
     );
-    dispatch(
+    await dispatch(
       setHistory([
         ...history,
         {
@@ -107,7 +111,47 @@ function Chatbot() {
     });
     const data = await reschat.json();
 
-    if (!result.includes("Travel-related questions only.")) {
+
+
+
+    const historyall = [
+      ...history,
+      {
+        role: "user",
+        parts: [
+          {
+            text: question,
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [
+          {
+            text: result,
+          },
+        ],
+      },
+    ]
+
+    console.log(historyall)
+    const dayres = await fetch("http://localhost:1000/chatbot/dayPlanResult", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ historyall }),
+    });
+    const dayresult = await dayres.json();
+    console.log(dayresult);
+    setPlanDisp(dayresult);
+
+
+
+
+
+
+    if(dayresult.sucess != false){
       const imagesArr = await fetch(
         "http://localhost:1000/chatbot/photosResult",
         {
@@ -115,15 +159,14 @@ function Chatbot() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ query: question }),
+          body: JSON.stringify({ query: `${dayresult.destination}` }),
         }
       );
       const testImg = await imagesArr.json();
-      console.log(testImg);
+      // console.log(testImg);
       setImageDisp(testImg);
-    } else {
-      setImageDisp([]);
     }
+
     setResourseLoading(false);
     setQuestion("");
   };
@@ -154,11 +197,12 @@ function Chatbot() {
       {/* Chat resources side */}
       <div className="w-[4%]"></div>
       <div className="w-[48%] h-full bg-slate-200 overflow-y-scroll overflow-x-hidden scroll-smooth no-scrollbar">
-        <div className="w-full h-[320px]">
-          {imageDisp.length != 0
-          ? <Image images={imageDisp} />
-          : ''
-          }
+        <div className="w-full h-[400px]">
+          {imageDisp.length != 0 ? <Image images={imageDisp} /> : ""}
+        </div>
+        <div className="w-full">
+          {planDisp != null ? <DayPlan Plan={planDisp} /> : ''}
+          
         </div>
       </div>
 
