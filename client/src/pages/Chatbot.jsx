@@ -201,7 +201,7 @@ function Chatbot() {
           {imageDisp.length != 0 ? <Image images={imageDisp} /> : ""}
         </div>
         <div className="w-full">
-          {planDisp != null ? <DayPlan Plan={planDisp} /> : ''}
+          {planDisp != null && planDisp != undefined ? <DayPlan Plan={planDisp} /> : ''}
           
         </div>
       </div>

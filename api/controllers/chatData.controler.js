@@ -76,12 +76,38 @@ export const addImgBookmark = async (req, res, next) => {
     next(error);
   }
 };
+export const addPlanBookmark = async (req, res, next) => {
+  try {
+    const { userId, Plan } = req.body;
+    const chatSaved = await UserData.findOneAndUpdate(
+      { userId }, // Query to find the user by userId
+      { $push: { "bookmarks.dayPlan": Plan } }, // $push to append the new image to bookmarks.images
+      { new: true, runValidators: true } // Options: return updated document and run schema validation
+    );
+    res.status(201).json(chatSaved);
+  } catch (error) {
+    next(error);
+  }
+};
 export const getBookmarkedImg = async (req, res, next) => {
   try {
     const { userId } = req.body;
     const chatSaved = await UserData.findOne(
       { userId: userId }, // Query to find the user by userId
       { "bookmarks.photo": 1, _id: 0 } // Projection: include bookmarks.images, exclude _id
+    );
+
+    res.status(201).json(chatSaved);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getBookmarkedPlan = async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    const chatSaved = await UserData.findOne(
+      { userId: userId }, // Query to find the user by userId
+      { "bookmarks.dayPlan": 1, _id: 0 } // Projection: include bookmarks.images, exclude _id
     );
 
     res.status(201).json(chatSaved);

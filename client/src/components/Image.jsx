@@ -28,6 +28,9 @@ function Image({ images }) {
       console.log(savedImg);
     }
   };
+  function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
   if (images.length != 0) {
     return (
       <>
@@ -46,7 +49,7 @@ function Image({ images }) {
                 src={images[0]}
                 alt=""
 
-                // onError={`this.onerror=null; this.src='${images[5]}'`}
+                onError={(e)=>e.target.src=images[getRandomInt(9)]}
               />
               {img1Hover ? (
                 <button
@@ -73,8 +76,7 @@ function Image({ images }) {
                   className="w-[180px] h-[150px] rounded-md"
                   src={images[1]}
                   alt=""
-
-                  //   onError={`this.onerror=null; this.src='${images[0]}'`}
+                  onError={(e)=>e.target.src=images[getRandomInt(9)]}
                 />
                 {img2Hover ? (
                   <button
@@ -101,7 +103,7 @@ function Image({ images }) {
                   src={images[2]}
                   alt=""
 
-                  //   onError={`this.onerror=null; this.src='${images[0]}'`}
+                  onError={(e)=>e.target.src=images[getRandomInt(9)]}
                 />
                 {img3Hover ? (
                   <button
@@ -128,7 +130,7 @@ function Image({ images }) {
                   src={images[3]}
                   alt=""
 
-                  //   onError={`this.onerror=null; this.src='${images[0]}'`}
+                  onError={(e)=>e.target.src=images[getRandomInt(9)]}
                 />
                 {img4Hover ? (
                   <button
@@ -155,7 +157,7 @@ function Image({ images }) {
                   src={images[4]}
                   alt=""
 
-                  //   onError={`this.onerror=null; this.src='${images[0]}'`}
+                  onError={(e)=>e.target.src=images[getRandomInt(9)]}
                 />
                 {img5Hover ? (
                   <button
