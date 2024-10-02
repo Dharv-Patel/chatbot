@@ -84,6 +84,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 .login-pass{
     display: flex;
@@ -92,6 +93,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 .btnShow{
     margin: 4px;
@@ -148,6 +150,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 
 .signup-email{
@@ -156,6 +159,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 .signup-pass{
     display: flex;
@@ -164,6 +168,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 .signup-confpass{
     display: flex;
@@ -172,6 +177,7 @@ input{
     background-color: floralwhite;
     border-radius: 8px;
     margin-left: 20px;
+    padding-left: 4px;
 }
 .btnShow{
     margin: 4px;

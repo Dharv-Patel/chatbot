@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {  signInSuccess } from '../redux/user/userSlice.js';
+
 
 function Profile() {
   const [editProfile, setEditProfile] = useState(false);
@@ -20,8 +22,8 @@ function Profile() {
     gender: currentUser.gender == null ? "" : currentUser.gender,
     mobileNumber:
       currentUser.mobileNumber == null ? "" : currentUser.mobileNumber,
-    address: "",
-    profilePicture: null,
+    address: currentUser.address == null ? "" : currentUser.address,
+    profilePicture: currentUser.profilePicture == null ? "" : currentUser.profilePicture,
   });
 
   const [fileError, setFileError] = useState("");
@@ -33,6 +35,8 @@ function Profile() {
   const [day, setDay] = useState(0);
   const [imgs, setImgs] = useState([]);
   const [bigImg, setBigImg] = useState(null);
+  const [profileimg, setProfileImg] = useState(null);
+  const [imageUrl, setImageUrl] = useState(`http://localhost:1000/images/${currentUser.profilePicture}`)
 
   const handleFormData = (e) => {
     const { id, value, type, files } = e.target;
@@ -43,12 +47,13 @@ function Profile() {
           ...userData,
           profilePicture: file.name, // Storing valid image file object
         });
+        setProfileImg(file);
         setFileError(""); // Clear the error if the file is valid
       } else {
         setFileError("Only image files (jpg, png, jpeg) are allowed.");
         setUserData({
           ...userData,
-          profilePicture: null, // Reset the file if invalid
+          profilePicture: currentUser.profilePicture, // Reset the file if invalid
         });
       }
     } else {
@@ -59,15 +64,42 @@ function Profile() {
     }
   };
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async (e) => {
+    console.log(userData)
     e.preventDefault();
+    if(userData.profilePicture == "")
+      setUserData({...userData,profilePicture:currentUser.profilePicture})
+    const formData = new FormData();
+    formData.append('userId', currentUser._id); 
+    formData.append('userData', JSON.stringify(userData));
+    formData.append('file', profileimg);
     console.log(userData);
-    // if (userData.profilePicture) {
-    //   console.log("Selected file:", userData.profilePicture.name);
-    // }
+    try {
+      const res = await fetch("http://localhost:1000/userchats/updateProfile", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success !== false) {
+        console.log(data)
+        dispatch(signInSuccess(data))
+        setImageUrl(`http://localhost:1000/images/${data.profilePicture}`)
+        // handelCancel(null)
+        console.log(imageUrl)
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+   
   };
   const handelCancel = (e) => {
-    e.preventDefault();
+    if(e != null){
+
+      e.preventDefault();
+    }
     setEditProfile(false);
     setFileError("");
     setUserData({
@@ -77,9 +109,10 @@ function Profile() {
       gender: currentUser.gender == null ? "" : currentUser.gender,
       mobileNumber:
         currentUser.mobileNumber == null ? "" : currentUser.mobileNumber,
-      address: "",
-      profilePicture: null,
+      address: currentUser.address == null ? "" : currentUser.address,
+      profilePicture: currentUser.profilePicture == null ? "" : currentUser.profilePicture,
     });
+    
   };
 
   const findallchats = async () => {
@@ -191,7 +224,9 @@ function Profile() {
     <div className="w-full flex">
       <div className="w-[4%]"></div>
       <div className="w-[30%] h-auto flex flex-col items-center">
-        <div className="w-72 h-72 rounded-full bg-green-200 mt-20"></div>
+        <div className="w-72 h-72 rounded-full bg-white mt-20 overflow-hidden">
+          <img src={imageUrl} alt="" className="w-full h-full object-cover" />
+        </div>
         <div className="w-72 h-96 mt-2 flex flex-col">
           <span className="text-2xl font-semibold">{currentUser.username}</span>
           <span className="text-xl">{currentUser.email}</span>
@@ -274,6 +309,7 @@ function Profile() {
                 type="file"
                 className="w-full bg-white my-2 p-1"
                 onChange={handleFormData}
+                
               />
               {<p className="text-red-500">{fileError}</p>}
               <div className="flex justify-evenly mt-10 mb-20">
@@ -305,7 +341,7 @@ function Profile() {
             return (
               <div
                 
-                className="group w-[45%] h-12 border-2 border-slate-300 bg-white my-2 text-lg content-center px-2 overflow-hidden text-slate-800 rounded-lg hover:bg-sky-50 cursor-pointer"
+                className="group w-[45%] h-12 border-2 border-slate-300 bg-white my-2 text-lg content-center px-2 overflow-hidden text-slate-800 rounded-lg hover:bg-sky-50 "
                 key={i}
               >
                 <span className="truncate">{value.title}</span>
@@ -314,13 +350,13 @@ function Profile() {
                 </span>
                 <FontAwesomeIcon
                   icon={faTrash}
-                  className="float-right mt-1 text-red-400 hidden group-hover:inline-block mx-1"
+                  className="float-right mt-1 text-red-400 hidden group-hover:inline-block mx-1 cursor-pointer"
                   onClick={() => deleteChat(value._id)}
                 />
                 <FontAwesomeIcon
                   id={value._id}
                   icon={faEye}
-                  className="float-right mt-1 text-green-400 hidden group-hover:inline-block mx-1"
+                  className="float-right mt-1 text-green-400 hidden group-hover:inline-block mx-1 cursor-pointer"
                   onClick={handelChat}
                 />
               </div>
@@ -336,17 +372,17 @@ function Profile() {
             return (
               <div
                 key={i}
-                className="group min-w-[21%] h-12 border-2 border-slate-300 bg-white my-2 text-lg content-center px-2 overflow-hidden text-slate-800 rounded-lg hover:bg-sky-50 cursor-pointer"
+                className="group min-w-[21%] h-12 border-2 border-slate-300 bg-white my-2 text-lg content-center px-2 overflow-hidden text-slate-800 rounded-lg hover:bg-sky-50"
               >
                 <span>{value.destination}</span>
                 <FontAwesomeIcon
                   icon={faTrash}
-                  className="float-right mt-1 text-red-400 hidden group-hover:inline-block"
+                  className="float-right mt-1 text-red-400 hidden group-hover:inline-block cursor-pointer"
                   onClick={()=>deletePlan(value.destination)}
                 />
                 <FontAwesomeIcon
                   icon={faEye}
-                  className="float-right mt-1 text-green-400 hidden group-hover:inline-block mx-2"
+                  className="float-right mt-1 text-green-400 hidden group-hover:inline-block mx-2 cursor-pointer"
                   onClick={() => setActivePlan(activePlan == i ? null : i)}
                 />
               </div>

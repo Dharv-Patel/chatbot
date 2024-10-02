@@ -1,5 +1,14 @@
+import { fileURLToPath } from "url";
 import UserData from "../models/chat.model.js";
+import User from "../models/user.model.js";
 import { handelError } from "../utils/error.js";
+import path from 'path'
+import { dirname } from 'path';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const folder = path.join(__dirname , "images")
 
 export const addNewChats = async (req, res, next) => {
   try {
@@ -139,6 +148,25 @@ export const deletedayPlan = async (req, res, next) => {
     )
 
     res.status(201).json(plandelete);
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateProfile = async (req, res, next) => {
+  try {
+    
+    let { userId, userData } = req.body;
+    userId = userId.replace(/["]+/g, ''); 
+    const profilePicture = await req.file;
+    const finalData = JSON.parse(userData)
+    // console.log(JSON.parse(userData))
+    const updateUser = await User.findOneAndUpdate(
+      { _id: userId },                 // Query to find the user by userId
+      { $set: finalData },       // $set to update the profile with new data (including photo)
+      { new: true }  // Options: return updated document and validate the schema
+    )
+    // console.log(updateUser)
+    res.status(201).json(updateUser);
   } catch (error) {
     next(error);
   }
