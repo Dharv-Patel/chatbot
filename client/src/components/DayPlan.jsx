@@ -83,7 +83,7 @@ function DayPlan({ Plan }) {
                 <h3 className="font-semibold mx-2 list-item text-nowrap marker:text-slate-400">
                   Name :{" "}
                 </h3>
-                <span className="text-slate-800">{value.name}</span>
+                <span className="text-sky-600 font-bold">{value.name}</span>
               </div>
               <div className="flex justify-start mx-4 my-3 ">
                 <h3 className="font-semibold mx-2 list-item text-nowrap marker:text-slate-400">

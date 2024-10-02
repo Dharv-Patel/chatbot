@@ -115,3 +115,31 @@ export const getBookmarkedPlan = async (req, res, next) => {
     next(error);
   }
 };
+export const deleteChat = async (req, res, next) => {
+  try {
+    const { userId, chatId } = req.body;
+    const chatdelete = await UserData.findOneAndUpdate(
+      { userId: userId },                      // Query to find the user by userId
+      { $pull: { chats: { _id: chatId } } },   // Use $pull to remove the chat with the specified _id from chats array
+      { new: true }                            // Option to return the updated document after deletion
+    )
+
+    res.status(201).json(chatdelete);
+  } catch (error) {
+    next(error);
+  }
+};
+export const deletedayPlan = async (req, res, next) => {
+  try {
+    const { userId, destination } = req.body;
+    const plandelete = await UserData.findOneAndUpdate(
+      { userId: userId },
+      { $pull: { 'bookmarks.dayPlan': { destination: destination } } },
+      { new: true }
+    )
+
+    res.status(201).json(plandelete);
+  } catch (error) {
+    next(error);
+  }
+};
